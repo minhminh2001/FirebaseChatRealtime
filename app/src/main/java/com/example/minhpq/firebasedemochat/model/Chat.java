@@ -1,10 +1,14 @@
 package com.example.minhpq.firebasedemochat.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by minhpq on 4/24/2018.
  */
 
-public class Chat {
+public class Chat extends RealmObject{
+    @PrimaryKey
     private String idSender;
     private String idReciver;
     private String message;

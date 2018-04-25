@@ -40,6 +40,10 @@ public class ListMemberAdapter extends RecyclerView.Adapter<ListMemberAdapter.Vi
         this.memberList = memberList;
         this.homePresenter = homePresenter;
     }
+    public void setListMemberAdapter(List<Member>listMember){
+        memberList.addAll(listMember);
+        notifyDataSetChanged();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

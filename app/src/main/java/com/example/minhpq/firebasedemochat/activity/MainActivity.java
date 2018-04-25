@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.minhpq.firebasedemochat.OnclickInterface;
 import com.example.minhpq.firebasedemochat.R;
+import com.example.minhpq.firebasedemochat.RealmService;
 import com.example.minhpq.firebasedemochat.adapter.ListMemberAdapter;
 import com.example.minhpq.firebasedemochat.model.Member;
 import com.example.minhpq.firebasedemochat.presenter.HomePresenter;
+import com.example.minhpq.firebasedemochat.util.CheckConnection;
 import com.example.minhpq.firebasedemochat.view.HomeView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -21,8 +24,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class MainActivity extends BaseActivity implements HomeView {
+    CheckConnection checkConnection;
+    RealmService realmService;
+    Realm realm;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     private List<Member> memberList = new ArrayList<>();
@@ -41,7 +48,10 @@ public class MainActivity extends BaseActivity implements HomeView {
         rv_user.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRef = FirebaseDatabase.getInstance().getReference();
         mMemberRef = mRef.child("Member");
-        homePresenter = new HomePresenter(memberList, this, mMemberRef, firebaseAuth);
+        realm=Realm.getDefaultInstance();
+        realmService=new RealmService(realm);
+        checkConnection=new CheckConnection(getApplicationContext());
+        homePresenter = new HomePresenter(realmService,memberList, this, mMemberRef, firebaseAuth);
         homePresenter.getListmember();
 
     }
@@ -58,15 +68,19 @@ public class MainActivity extends BaseActivity implements HomeView {
 
     @Override
     public void showListmember(List<Member> list) {
-        listMemberAdapter = new ListMemberAdapter(new OnclickInterface() {
-            @Override
-            public void onItemClickListener(int position) {
-                startActivity(new Intent(MainActivity.this,ChatLayoutActivity.class));
-                finish();
-            }
-        },
-        MainActivity.this, list, homePresenter);
-        rv_user.setAdapter(listMemberAdapter);
+        if(checkConnection.isOnline()){
+            listMemberAdapter = new ListMemberAdapter(new OnclickInterface() {
+                @Override
+                public void onItemClickListener(int position) {
+                    startActivity(new Intent(MainActivity.this,ChatLayoutActivity.class));
+                    finish();
+                }
+            },
+                    MainActivity.this, list, homePresenter);
+            rv_user.setAdapter(listMemberAdapter);
+        }else {
+            listMemberAdapter.setListMemberAdapter(realmService.getAllMember());
+        }
     }
 
 }

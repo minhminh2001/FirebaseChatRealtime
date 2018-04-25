@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'realm-android'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -17,7 +17,9 @@ android {
         }
     }
 }
-
+realm {
+    syncEnabled = true;
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible

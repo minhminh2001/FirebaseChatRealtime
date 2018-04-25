@@ -61,7 +61,14 @@ public class ChatLayoutActivity extends BaseActivity implements ChatView {
         btnSendmessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chatPresenter.senMesageToFirebase(edInputMessage.getText().toString(), idSend, recive);
+                if(!edInputMessage.getText().toString().equals("")){
+                    chatPresenter.senMesageToFirebase(edInputMessage.getText().toString(), idSend, recive);
+                }else {
+                    Toast.makeText(ChatLayoutActivity.this, "please add messages", Toast.LENGTH_SHORT).show();
+                    edInputMessage.requestFocus();
+
+                }
+                
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.minhpq.firebasedemochat.presenter;
 
+import com.example.minhpq.firebasedemochat.RealmService;
 import com.example.minhpq.firebasedemochat.activity.MainActivity;
 import com.example.minhpq.firebasedemochat.adapter.ListMemberAdapter;
 import com.example.minhpq.firebasedemochat.model.Member;
@@ -19,11 +20,13 @@ import java.util.List;
  */
 
 public class HomePresenter {
+    private RealmService realmService;
     private List<Member> memberList = new ArrayList<>();
     FirebaseAuth firebaseAuth;
     private HomeView homeView;
     DatabaseReference mMemberRef;
-    public HomePresenter(List<Member> memberList, HomeView homeView,DatabaseReference mMemberRef,FirebaseAuth firebaseAuth) {
+    public HomePresenter(RealmService realmService,List<Member> memberList, HomeView homeView,DatabaseReference mMemberRef,FirebaseAuth firebaseAuth) {
+        this.realmService=realmService;
         this.firebaseAuth=firebaseAuth;
         this.mMemberRef=mMemberRef;
         this.memberList = memberList;
@@ -37,12 +40,11 @@ public class HomePresenter {
                 memberList.clear();
                 if (dataSnapshot.getChildrenCount() > 0) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String email = String.valueOf(snapshot.child("email").getValue());
-                        String userId= String.valueOf(snapshot.child("userId").getValue());
-                        Member member = new Member(email,userId);
+                        Member member=snapshot.getValue(Member.class);
                         if (!member.getUserId().equals(firebaseAuth.getCurrentUser().getUid())) {
                             memberList.add(member);
                             homeView.showListmember(memberList);
+                            realmService.addListMember(memberList);
                         }
                     }
 

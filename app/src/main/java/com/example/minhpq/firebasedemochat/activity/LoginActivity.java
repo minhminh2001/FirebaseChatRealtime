@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.minhpq.firebasedemochat.R;
 import com.example.minhpq.firebasedemochat.presenter.LoginPresenter;
+import com.example.minhpq.firebasedemochat.util.CheckConnection;
 import com.example.minhpq.firebasedemochat.view.LoginView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,6 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @OnClick(R.id.btn_login)
     public void login() {
+
         loginPresenter.getNewMember((edEmailLogin.getText().toString()), edEmailPass.getText().toString());
     }
 
