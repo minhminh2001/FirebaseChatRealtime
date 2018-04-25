@@ -12,9 +12,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.minhpq.firebasedemochat.R;
+import com.example.minhpq.firebasedemochat.RealmService;
 import com.example.minhpq.firebasedemochat.adapter.ChatMessageAdapter;
 import com.example.minhpq.firebasedemochat.model.Chat;
 import com.example.minhpq.firebasedemochat.presenter.ChatPresenter;
+import com.example.minhpq.firebasedemochat.util.CheckConnection;
 import com.example.minhpq.firebasedemochat.view.ChatView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,12 +29,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * Created by minhpq on 4/24/2018.
  */
 
 public class ChatLayoutActivity extends BaseActivity implements ChatView {
+    RealmService realmService;
+    Realm realm;
+    CheckConnection checkConnection;
     @BindView(R.id.rv_massage)
     RecyclerView rvMassage;
     @BindView(R.id.ed_input_message)
@@ -52,7 +58,8 @@ public class ChatLayoutActivity extends BaseActivity implements ChatView {
         super.onCreate(savedInstanceState);
         recive = getIntent().getExtras().getString("userId");
         mMemberRef = FirebaseDatabase.getInstance().getReference().child("Chat");
-        chatPresenter = new ChatPresenter(mMemberRef, this, chatList);
+        realmService=new RealmService(realm);
+        chatPresenter = new ChatPresenter(realmService,mMemberRef, this, chatList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvMassage.setLayoutManager(linearLayoutManager);
         linearLayoutManager.setStackFromEnd(true);
@@ -86,8 +93,13 @@ public class ChatLayoutActivity extends BaseActivity implements ChatView {
 
     @Override
     public void showChatmessage(List<Chat> chatList) {
-        chatMessageAdapter = new ChatMessageAdapter(chatList, this);
-        rvMassage.setAdapter(chatMessageAdapter);
+        if(checkConnection.isOnline()){
+            chatMessageAdapter = new ChatMessageAdapter(chatList, this);
+            rvMassage.setAdapter(chatMessageAdapter);
+        }else {
+            chatMessageAdapter.setListMessegaAdapter(realmService.getAllMessage());
+        }
+
     }
 
     @Override

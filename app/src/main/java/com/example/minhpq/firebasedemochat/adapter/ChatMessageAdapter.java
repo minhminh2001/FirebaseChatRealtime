@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.minhpq.firebasedemochat.R;
 import com.example.minhpq.firebasedemochat.model.Chat;
+import com.example.minhpq.firebasedemochat.model.Member;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -69,5 +70,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             layout = itemView;
             tv_content = (TextView) itemView.findViewById(R.id.tv_content);
         }
+    }
+    public void setListMessegaAdapter(List<Chat>chatList){
+        chatList.addAll(chatList);
+        notifyDataSetChanged();
     }
 }

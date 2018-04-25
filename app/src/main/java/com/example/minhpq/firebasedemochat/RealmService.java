@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.example.minhpq.firebasedemochat.model.Chat;
 import com.example.minhpq.firebasedemochat.model.Member;
 import com.example.minhpq.firebasedemochat.util.CheckConnection;
 
@@ -20,12 +21,13 @@ public class RealmService {
         this.realm = realm;
     }
 
-    public void closeRealm(){
+    public void closeRealm() {
         realm.close();
     }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void addListMember(final List<Member>listMember){
-        try(Realm realm = Realm.getDefaultInstance()) {
+    public void addListMember(final List<Member> listMember) {
+        try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -38,6 +40,7 @@ public class RealmService {
         }
 
     }
+
     public List<Member> getAllMember() {
         List<Member> memberList = null;
         try {
@@ -48,6 +51,33 @@ public class RealmService {
         }
 
         return memberList;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void addListMessega(final List<Chat> chatList) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    List<Chat> chats = new ArrayList<>();
+                    chats.addAll(chatList);
+                    realm.insertOrUpdate(chats);
+                    closeRealm();
+                }
+            });
+        }
+
+    }
+    public List<Chat> getAllMessage() {
+        List<Chat> chats = null;
+        try {
+            chats = new ArrayList<>();
+            chats.addAll(realm.where(Chat.class).findAll());
+        } catch (Exception e) {
+            realm.close();
+        }
+
+        return chats;
     }
 
 }

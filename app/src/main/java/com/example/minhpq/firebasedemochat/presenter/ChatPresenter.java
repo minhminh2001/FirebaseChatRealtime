@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.minhpq.firebasedemochat.RealmService;
 import com.example.minhpq.firebasedemochat.activity.ChatLayoutActivity;
 import com.example.minhpq.firebasedemochat.model.Chat;
 import com.example.minhpq.firebasedemochat.model.Member;
@@ -28,12 +29,14 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  */
 
 public class ChatPresenter {
+    private RealmService realmService;
     DatabaseReference mChatRef;
     private ChatView chatView;
     private List<Chat> mListChat;
 
 
-    public ChatPresenter(DatabaseReference mChatRef, ChatView chatView, List<Chat> chatList) {
+    public ChatPresenter(RealmService realmService,DatabaseReference mChatRef, ChatView chatView, List<Chat> chatList) {
+        this.realmService=realmService;
         this.mChatRef = mChatRef;
         this.chatView = chatView;
         mListChat = chatList;
@@ -66,6 +69,9 @@ public class ChatPresenter {
                                 && chat.getIdReciver().equals(idReciver) || chat.getIdSender().equals(idReciver)
                                 && chat.getIdReciver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             mListChat.add(chat);
+                            realmService.addListMessega(mListChat);
+
+
                         }
 
                     }
