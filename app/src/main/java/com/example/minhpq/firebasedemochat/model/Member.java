@@ -1,5 +1,7 @@
 package com.example.minhpq.firebasedemochat.model;
 
+import android.net.Uri;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,22 +12,17 @@ import io.realm.annotations.PrimaryKey;
 public class Member extends RealmObject{
     @PrimaryKey
     private String userId;
+    private String avatar;
     private String displayName;
     private String email;
     private String password;
 
-    public Member() {
-    }
-
-    public Member(String userId, String displayName, String email) {
+    public Member(String userId, String avatar, String displayName, String email, String password) {
         this.userId = userId;
+        this.avatar = avatar;
         this.displayName = displayName;
         this.email = email;
-    }
-
-    public Member(String email,String userId) {
-        this.userId=userId;
-        this.email = email;
+        this.password = password;
     }
 
     public String getUserId() {
