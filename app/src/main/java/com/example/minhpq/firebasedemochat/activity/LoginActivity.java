@@ -4,12 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.minhpq.firebasedemochat.R;
 import com.example.minhpq.firebasedemochat.presenter.LoginPresenter;
-import com.example.minhpq.firebasedemochat.util.CheckConnection;
 import com.example.minhpq.firebasedemochat.view.LoginView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -26,8 +27,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
     EditText edEmailPass;
     @BindView(R.id.btn_login)
     Button btnLogin;
-    @BindView(R.id.btn_register)
-    Button btnRegister;
+    @BindView(R.id.cb_remember_account)
+    CheckBox cbRememberAccount;
+    @BindView(R.id.tv_forgotpass)
+    TextView tvForgotpass;
+    @BindView(R.id.tv_signup)
+    TextView tvSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +44,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @OnClick(R.id.btn_login)
     public void login() {
-
-        loginPresenter.getNewMember((edEmailLogin.getText().toString()), edEmailPass.getText().toString());
+        loginPresenter.setLoginMember((edEmailLogin.getText().toString()), edEmailPass.getText().toString());
     }
 
-    @OnClick(R.id.btn_register)
+    @OnClick(R.id.tv_signup)
     public void register() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);

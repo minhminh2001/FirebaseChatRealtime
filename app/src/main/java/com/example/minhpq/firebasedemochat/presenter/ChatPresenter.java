@@ -35,8 +35,8 @@ public class ChatPresenter {
     private List<Chat> mListChat;
 
 
-    public ChatPresenter(RealmService realmService,DatabaseReference mChatRef, ChatView chatView, List<Chat> chatList) {
-        this.realmService=realmService;
+    public ChatPresenter(RealmService realmService, DatabaseReference mChatRef, ChatView chatView, List<Chat> chatList) {
+        this.realmService = realmService;
         this.mChatRef = mChatRef;
         this.chatView = chatView;
         mListChat = chatList;
@@ -70,17 +70,10 @@ public class ChatPresenter {
                                 && chat.getIdReciver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             mListChat.add(chat);
                             realmService.addListMessega(mListChat);
-
-
                         }
-
                     }
-
                     chatView.showChatmessage(mListChat);
-
                 }
-
-
             }
 
             @Override

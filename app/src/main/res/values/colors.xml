@@ -13,5 +13,10 @@
     <color name="grey_500">#a4a4a4</color>
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_800">#212121</color>
+    <color name="colorblue">#5d6dbf</color>
+    <color name="color_background_login">#718b7c</color>
+    <color name="colorblueface">#4457b6</color>
+    <color name="colororange">#deb754</color>
+
 
 </resources>

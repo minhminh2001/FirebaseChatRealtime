@@ -3,6 +3,7 @@ package com.example.minhpq.firebasedemochat.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.minhpq.firebasedemochat.activity.LoginActivity;
@@ -30,22 +31,18 @@ public class LoginPresenter {
         this.loginView = loginView;
     }
 
-    public void getNewMember(String email, String password) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+    public void setLoginMember(String email,String password){
+        firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(loginActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            loginView.showError();
-                        }else {
+                        if(task.isSuccessful()){
                             loginView.showSuccess();
+                        }else {
+                            loginView.showError();
                         }
                     }
                 });
     }
 
-
-//    public Activity getActivty(){
-//        return LoginActivity.this;
-//    }
 }
