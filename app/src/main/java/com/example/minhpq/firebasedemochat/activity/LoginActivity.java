@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
     TextView tvForgotpass;
     @BindView(R.id.tv_signup)
     TextView tvSignup;
+    @BindView(R.id.ll_facebook)
+    LinearLayout llFacebook;
+    @BindView(R.id.ll_google)
+    LinearLayout llGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,15 @@ public class LoginActivity extends BaseActivity implements LoginView {
         finish();
     }
 
+    @OnClick({R.id.ll_facebook})
+    public void loginFacebook(){
+
+
+    }
+    @OnClick({R.id.ll_google})
+    public void loginGoogle(){
+
+    }
     @Override
     public void bindViews() {
         ButterKnife.bind(this);
